@@ -29,6 +29,14 @@ public class GalleryActivity extends AppCompatActivity {
 
         photoRecyclerView = (RecyclerView) findViewById(R.id.photo_gallery_recycler_view);
         photoRecyclerView.setLayoutManager(new GridLayoutManager(this, 3));
+
+        new FetchItemTask().execute();
+
+        setupAdapter();
+    }
+
+    private void setupAdapter(){
+        photoRecyclerView.setAdapter(new PhotoAdapter(mItems));
     }
 
     private class PhotoHolder extends RecyclerView.ViewHolder {
@@ -51,7 +59,7 @@ public class GalleryActivity extends AppCompatActivity {
         @Override
         public PhotoHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater inflater = LayoutInflater.from(GalleryActivity.this);
-            View view = inflater.inflate(R.layout.gallery_item, parent);
+            View view = inflater.inflate(R.layout.gallery_item, parent, false);
             return new PhotoHolder(view);
         }
 
@@ -77,6 +85,7 @@ public class GalleryActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(List<GalleryItem> items) {
             mItems = items;
+            setupAdapter();
         }
     }
 }
